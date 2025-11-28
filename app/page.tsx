@@ -14,6 +14,7 @@ const translations = {
       skills: "Ko'nikmalar",
       projects: "Maqsadlar",
       books: "Kitob fikrlari",
+      gallery: "Galereya",
       notes: "Qaydlar",
       contact: "Aloqa",
     },
@@ -99,6 +100,37 @@ const translations = {
       likes: "yoqdi",
       from: "dan",
     },
+    gallery: {
+      title: "Galereya",
+      subtitle: "Esdalik rasmlar, sertifikatlar va muhim lahzalar",
+      addNew: "Yangi galereya qo'shish",
+      noItems: "Hali galereya yo'q",
+      addFirst: "Birinchi galereyani qo'shing",
+      itemTitle: "Sarlavha",
+      itemTitlePlaceholder: "Masalan: CCNA sertifikati",
+      itemDescription: "Tavsif",
+      itemDescriptionPlaceholder: "Bu rasm/sertifikat haqida ma'lumot yozing...",
+      itemCategory: "Kategoriya",
+      categories: {
+        certificate: "Sertifikat",
+        event: "Tadbir",
+        memory: "Esdalik",
+        achievement: "Yutuq",
+        other: "Boshqa",
+      },
+      images: "Rasmlar (1-5 ta)",
+      uploadImages: "Rasmlarni yuklash",
+      addMore: "Yana qo'shish",
+      maxImages: "Maksimum 5 ta rasm",
+      cancel: "Bekor qilish",
+      save: "Saqlash",
+      add: "Qo'shish",
+      editTitle: "Galereyani tahrirlash",
+      addTitle: "Yangi galereya qo'shish",
+      confirmDelete: "Bu galereyani o'chirishni xohlaysizmi?",
+      viewAll: "Barchasini ko'rish",
+      close: "Yopish",
+    },
     contact: {
       title: "Bog'lanish",
       subtitle: "Men bilan bog'laning",
@@ -126,6 +158,7 @@ const translations = {
       skills: "Skills",
       projects: "Goals",
       books: "Book Quotes",
+      gallery: "Gallery",
       notes: "Notes",
       contact: "Contact",
     },
@@ -211,6 +244,37 @@ const translations = {
       likes: "likes",
       from: "from",
     },
+    gallery: {
+      title: "Gallery",
+      subtitle: "Memorable photos, certificates and important moments",
+      addNew: "Add New Gallery",
+      noItems: "No gallery items yet",
+      addFirst: "Add your first gallery",
+      itemTitle: "Title",
+      itemTitlePlaceholder: "e.g., CCNA Certificate",
+      itemDescription: "Description",
+      itemDescriptionPlaceholder: "Write about this photo/certificate...",
+      itemCategory: "Category",
+      categories: {
+        certificate: "Certificate",
+        event: "Event",
+        memory: "Memory",
+        achievement: "Achievement",
+        other: "Other",
+      },
+      images: "Images (1-5)",
+      uploadImages: "Upload Images",
+      addMore: "Add More",
+      maxImages: "Maximum 5 images",
+      cancel: "Cancel",
+      save: "Save",
+      add: "Add",
+      editTitle: "Edit Gallery",
+      addTitle: "Add New Gallery",
+      confirmDelete: "Are you sure you want to delete this gallery?",
+      viewAll: "View All",
+      close: "Close",
+    },
     contact: {
       title: "Contact",
       subtitle: "Get in Touch",
@@ -238,6 +302,7 @@ const translations = {
       skills: "기술",
       projects: "목표",
       books: "책 인용구",
+      gallery: "갤러리",
       notes: "노트",
       contact: "연락처",
     },
@@ -322,6 +387,37 @@ const translations = {
       confirmDelete: "이 인용구를 삭제하시겠습니까?",
       likes: "좋아요",
       from: "에서",
+    },
+    gallery: {
+      title: "갤러리",
+      subtitle: "추억의 사진, 자격증 및 중요한 순간들",
+      addNew: "새 갤러리 추가",
+      noItems: "아직 갤러리가 없습니다",
+      addFirst: "첫 번째 갤러리를 추가하세요",
+      itemTitle: "제목",
+      itemTitlePlaceholder: "예: CCNA 자격증",
+      itemDescription: "설명",
+      itemDescriptionPlaceholder: "이 사진/자격증에 대해 작성하세요...",
+      itemCategory: "카테고리",
+      categories: {
+        certificate: "자격증",
+        event: "이벤트",
+        memory: "추억",
+        achievement: "성취",
+        other: "기타",
+      },
+      images: "이미지 (1-5개)",
+      uploadImages: "이미지 업로드",
+      addMore: "더 추가",
+      maxImages: "최대 5개 이미지",
+      cancel: "취소",
+      save: "저장",
+      add: "추가",
+      editTitle: "갤러리 편집",
+      addTitle: "새 갤러리 추가",
+      confirmDelete: "이 갤러리를 삭제하시겠습니까?",
+      viewAll: "모두 보기",
+      close: "닫기",
     },
     contact: {
       title: "연락처",
@@ -511,6 +607,28 @@ const defaultBookQuotes: BookQuote[] = [
   },
 ];
 
+// Gallery interface
+interface GalleryItem {
+  id: number;
+  title: string;
+  description: string;
+  category: 'certificate' | 'event' | 'memory' | 'achievement' | 'other';
+  images: string[];
+  date: string;
+}
+
+// Default gallery items
+const defaultGalleryItems: GalleryItem[] = [
+  {
+    id: 1,
+    title: "Woosuk Universiteti",
+    description: "우석대학교 - Janubiy Koreya, Jeonju shahridagi universitetim. Bu yerda axborot xavfsizligi yo'nalishida ta'lim olmoqdaman.",
+    category: "memory",
+    images: [],
+    date: "2024-01-15",
+  },
+];
+
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("home");
   const [language, setLanguage] = useState<Language>("uz");
@@ -525,6 +643,17 @@ export default function Portfolio() {
   const [bookFormAuthor, setBookFormAuthor] = useState("");
   const [bookFormQuote, setBookFormQuote] = useState("");
   const [bookFormImage, setBookFormImage] = useState<string | null>(null);
+
+  // Gallery state
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
+  const [editingGallery, setEditingGallery] = useState<GalleryItem | null>(null);
+  const [galleryFormTitle, setGalleryFormTitle] = useState("");
+  const [galleryFormDescription, setGalleryFormDescription] = useState("");
+  const [galleryFormCategory, setGalleryFormCategory] = useState<GalleryItem['category']>("memory");
+  const [galleryFormImages, setGalleryFormImages] = useState<string[]>([]);
+  const [viewingGallery, setViewingGallery] = useState<GalleryItem | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const t = translations[language];
 
@@ -550,9 +679,40 @@ export default function Portfolio() {
   // Save book quotes to localStorage
   useEffect(() => {
     if (bookQuotes.length > 0) {
-      localStorage.setItem("portfolio-book-quotes", JSON.stringify(bookQuotes));
+      try {
+        localStorage.setItem("portfolio-book-quotes", JSON.stringify(bookQuotes));
+      } catch (e) {
+        console.warn("localStorage quota exceeded for book quotes");
+      }
     }
   }, [bookQuotes]);
+
+  // Load gallery items from localStorage
+  useEffect(() => {
+    const savedGallery = localStorage.getItem("portfolio-gallery");
+    if (savedGallery) {
+      setGalleryItems(JSON.parse(savedGallery));
+    } else {
+      setGalleryItems(defaultGalleryItems);
+      try {
+        localStorage.setItem("portfolio-gallery", JSON.stringify(defaultGalleryItems));
+      } catch (e) {
+        console.warn("localStorage quota exceeded");
+      }
+    }
+  }, []);
+
+  // Save gallery items to localStorage with error handling
+  useEffect(() => {
+    if (galleryItems.length > 0) {
+      try {
+        localStorage.setItem("portfolio-gallery", JSON.stringify(galleryItems));
+      } catch (e) {
+        console.warn("localStorage quota exceeded for gallery - images too large");
+        alert("Rasmlar hajmi juda katta! Kichikroq rasmlar yuklang.");
+      }
+    }
+  }, [galleryItems]);
 
   // Save language to localStorage
   const changeLanguage = (lang: Language) => {
@@ -593,14 +753,41 @@ export default function Portfolio() {
     setBookFormImage(null);
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+  // Compress image function
+  const compressImage = (file: File, maxWidth: number = 800, quality: number = 0.7): Promise<string> => {
+    return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setBookFormImage(reader.result as string);
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.src = e.target?.result as string;
       };
       reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const compressedImage = await compressImage(file, 600, 0.6);
+      setBookFormImage(compressedImage);
     }
   };
 
@@ -662,6 +849,113 @@ export default function Portfolio() {
     }));
   };
 
+  // Gallery functions
+  const openGalleryModal = (item?: GalleryItem) => {
+    if (item) {
+      setEditingGallery(item);
+      setGalleryFormTitle(item.title);
+      setGalleryFormDescription(item.description);
+      setGalleryFormCategory(item.category);
+      setGalleryFormImages(item.images);
+    } else {
+      setEditingGallery(null);
+      setGalleryFormTitle("");
+      setGalleryFormDescription("");
+      setGalleryFormCategory("memory");
+      setGalleryFormImages([]);
+    }
+    setIsGalleryModalOpen(true);
+  };
+
+  const closeGalleryModal = () => {
+    setIsGalleryModalOpen(false);
+    setEditingGallery(null);
+    setGalleryFormTitle("");
+    setGalleryFormDescription("");
+    setGalleryFormCategory("memory");
+    setGalleryFormImages([]);
+  };
+
+  const handleGalleryImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const remainingSlots = 5 - galleryFormImages.length;
+      const filesToProcess = Array.from(files).slice(0, remainingSlots);
+      
+      for (const file of filesToProcess) {
+        const compressedImage = await compressImage(file, 800, 0.6);
+        setGalleryFormImages(prev => [...prev, compressedImage]);
+      }
+    }
+  };
+
+  const removeGalleryImage = (index: number) => {
+    setGalleryFormImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleGallerySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const today = new Date().toISOString().split('T')[0];
+    
+    if (editingGallery) {
+      setGalleryItems(galleryItems.map(item => 
+        item.id === editingGallery.id 
+          ? { ...item, title: galleryFormTitle, description: galleryFormDescription, category: galleryFormCategory, images: galleryFormImages }
+          : item
+      ));
+    } else {
+      const newItem: GalleryItem = {
+        id: Date.now(),
+        title: galleryFormTitle,
+        description: galleryFormDescription,
+        category: galleryFormCategory,
+        images: galleryFormImages,
+        date: today,
+      };
+      setGalleryItems([newItem, ...galleryItems]);
+    }
+    closeGalleryModal();
+  };
+
+  const deleteGalleryItem = (id: number) => {
+    if (confirm(t.gallery.confirmDelete)) {
+      setGalleryItems(galleryItems.filter(item => item.id !== id));
+    }
+  };
+
+  const openGalleryViewer = (item: GalleryItem, imageIndex: number = 0) => {
+    setViewingGallery(item);
+    setCurrentImageIndex(imageIndex);
+  };
+
+  const closeGalleryViewer = () => {
+    setViewingGallery(null);
+    setCurrentImageIndex(0);
+  };
+
+  const nextImage = () => {
+    if (viewingGallery) {
+      setCurrentImageIndex((prev) => (prev + 1) % viewingGallery.images.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (viewingGallery) {
+      setCurrentImageIndex((prev) => (prev - 1 + viewingGallery.images.length) % viewingGallery.images.length);
+    }
+  };
+
+  const getCategoryIcon = (category: GalleryItem['category']) => {
+    switch (category) {
+      case 'certificate': return '📜';
+      case 'event': return '🎉';
+      case 'memory': return '📸';
+      case 'achievement': return '🏆';
+      default: return '📁';
+    }
+  };
+
   const languageLabels = {
     uz: { flag: "🇺🇿", name: "O'zbek" },
     en: { flag: "🇺🇸", name: "English" },
@@ -689,6 +983,7 @@ export default function Portfolio() {
                 { id: "skills", label: t.nav.skills },
                 { id: "projects", label: t.nav.projects },
                 { id: "books", label: t.nav.books },
+                { id: "gallery", label: t.nav.gallery },
                 { id: "notes", label: t.nav.notes, isLink: true },
                 { id: "contact", label: t.nav.contact },
               ].map((item) => (
@@ -1275,6 +1570,338 @@ export default function Portfolio() {
         </div>
       )}
 
+      {/* Gallery Section */}
+      <section id="gallery" className="py-16 sm:py-24 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-10 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              <span className="gradient-text">🖼️ {t.gallery.title}</span>
+            </h2>
+            <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto mb-6">
+              {t.gallery.subtitle}
+            </p>
+            <button
+              onClick={() => openGalleryModal()}
+              className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-cyan-500 to-violet-500 rounded-full font-medium text-white hover:shadow-lg hover:shadow-cyan-500/30 transition-all text-sm sm:text-base"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              {t.gallery.addNew}
+            </button>
+          </div>
+
+          {galleryItems.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center">
+                <span className="text-4xl">🖼️</span>
+              </div>
+              <p className="text-slate-500 mb-4">{t.gallery.noItems}</p>
+              <button
+                onClick={() => openGalleryModal()}
+                className="text-cyan-400 hover:underline"
+              >
+                {t.gallery.addFirst}
+              </button>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {galleryItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="group bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden hover:border-cyan-500/50 transition-all"
+                >
+                  {/* Images Preview */}
+                  {item.images.length > 0 ? (
+                    <div 
+                      className="relative h-48 sm:h-56 cursor-pointer overflow-hidden"
+                      onClick={() => openGalleryViewer(item, 0)}
+                    >
+                      <img
+                        src={item.images[0]}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      {item.images.length > 1 && (
+                        <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/60 rounded-lg text-xs text-white flex items-center gap-1">
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          +{item.images.length - 1}
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+                      <div className="absolute bottom-3 left-3">
+                        <span className="text-2xl">{getCategoryIcon(item.category)}</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="h-48 sm:h-56 bg-slate-700/30 flex items-center justify-center">
+                      <span className="text-6xl opacity-30">{getCategoryIcon(item.category)}</span>
+                    </div>
+                  )}
+                  
+                  {/* Content */}
+                  <div className="p-4 sm:p-5">
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h3 className="font-semibold text-slate-200 text-sm sm:text-base line-clamp-1">{item.title}</h3>
+                      <span className="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 rounded text-xs whitespace-nowrap">
+                        {t.gallery.categories[item.category]}
+                      </span>
+                    </div>
+                    
+                    <p className="text-slate-400 text-xs sm:text-sm line-clamp-2 mb-3">
+                      {item.description}
+                    </p>
+                    
+                    {/* Date and Actions */}
+                    <div className="flex items-center justify-between pt-3 border-t border-slate-700">
+                      <span className="text-xs text-slate-500">{item.date}</span>
+                      
+                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {item.images.length > 0 && (
+                          <button
+                            onClick={() => openGalleryViewer(item, 0)}
+                            className="p-1.5 text-slate-400 hover:text-cyan-400 transition-colors"
+                            title="View"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                          </button>
+                        )}
+                        <button
+                          onClick={() => openGalleryModal(item)}
+                          className="p-1.5 text-slate-400 hover:text-cyan-400 transition-colors"
+                          title="Edit"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={() => deleteGalleryItem(item.id)}
+                          className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+                          title="Delete"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Gallery Modal */}
+      {isGalleryModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-slate-800 rounded-2xl border border-slate-700 shadow-2xl">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-700">
+              <h3 className="text-lg sm:text-xl font-bold text-slate-100">
+                {editingGallery ? t.gallery.editTitle : t.gallery.addTitle}
+              </h3>
+              <button
+                onClick={closeGalleryModal}
+                className="p-2 text-slate-400 hover:text-slate-200 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <form onSubmit={handleGallerySubmit} className="p-4 sm:p-6 space-y-4">
+              {/* Images Upload */}
+              <div>
+                <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-2">
+                  {t.gallery.images}
+                </label>
+                
+                {/* Image Previews */}
+                {galleryFormImages.length > 0 && (
+                  <div className="grid grid-cols-3 gap-2 mb-3">
+                    {galleryFormImages.map((img, index) => (
+                      <div key={index} className="relative aspect-square rounded-lg overflow-hidden">
+                        <img src={img} alt="" className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => removeGalleryImage(index)}
+                          className="absolute top-1 right-1 p-1 bg-red-500 rounded-full text-white hover:bg-red-600 transition-colors"
+                        >
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {galleryFormImages.length < 5 && (
+                  <label className="flex flex-col items-center justify-center h-24 border-2 border-dashed border-slate-600 rounded-xl cursor-pointer hover:border-cyan-500/50 transition-colors">
+                    <svg className="w-6 h-6 text-slate-500 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span className="text-xs text-slate-500">
+                      {galleryFormImages.length > 0 ? t.gallery.addMore : t.gallery.uploadImages}
+                    </span>
+                    <span className="text-xs text-slate-600 mt-1">
+                      ({galleryFormImages.length}/5)
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleGalleryImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+              </div>
+
+              {/* Title */}
+              <div>
+                <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-2">
+                  {t.gallery.itemTitle} *
+                </label>
+                <input
+                  type="text"
+                  value={galleryFormTitle}
+                  onChange={(e) => setGalleryFormTitle(e.target.value)}
+                  required
+                  placeholder={t.gallery.itemTitlePlaceholder}
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors text-sm sm:text-base"
+                />
+              </div>
+
+              {/* Category */}
+              <div>
+                <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-2">
+                  {t.gallery.itemCategory}
+                </label>
+                <select
+                  value={galleryFormCategory}
+                  onChange={(e) => setGalleryFormCategory(e.target.value as GalleryItem['category'])}
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors text-sm sm:text-base"
+                >
+                  <option value="certificate">{getCategoryIcon('certificate')} {t.gallery.categories.certificate}</option>
+                  <option value="event">{getCategoryIcon('event')} {t.gallery.categories.event}</option>
+                  <option value="memory">{getCategoryIcon('memory')} {t.gallery.categories.memory}</option>
+                  <option value="achievement">{getCategoryIcon('achievement')} {t.gallery.categories.achievement}</option>
+                  <option value="other">{getCategoryIcon('other')} {t.gallery.categories.other}</option>
+                </select>
+              </div>
+
+              {/* Description */}
+              <div>
+                <label className="block text-xs sm:text-sm font-medium text-slate-300 mb-2">
+                  {t.gallery.itemDescription} *
+                </label>
+                <textarea
+                  value={galleryFormDescription}
+                  onChange={(e) => setGalleryFormDescription(e.target.value)}
+                  required
+                  rows={3}
+                  placeholder={t.gallery.itemDescriptionPlaceholder}
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors resize-none text-sm sm:text-base"
+                />
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={closeGalleryModal}
+                  className="flex-1 py-2.5 sm:py-3 px-4 border border-slate-700 rounded-xl text-slate-300 hover:bg-slate-700/50 transition-colors text-sm sm:text-base"
+                >
+                  {t.gallery.cancel}
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2.5 sm:py-3 px-4 bg-gradient-to-r from-cyan-500 to-violet-500 rounded-xl font-semibold text-white hover:shadow-lg hover:shadow-cyan-500/30 transition-all text-sm sm:text-base"
+                >
+                  {editingGallery ? t.gallery.save : t.gallery.add}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Gallery Viewer Modal */}
+      {viewingGallery && viewingGallery.images.length > 0 && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
+          {/* Close button */}
+          <button
+            onClick={closeGalleryViewer}
+            className="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
+          >
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          
+          {/* Navigation arrows */}
+          {viewingGallery.images.length > 1 && (
+            <>
+              <button
+                onClick={prevImage}
+                className="absolute left-4 p-2 text-white/70 hover:text-white transition-colors"
+              >
+                <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={nextImage}
+                className="absolute right-4 p-2 text-white/70 hover:text-white transition-colors"
+              >
+                <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </>
+          )}
+          
+          {/* Image */}
+          <div className="max-w-4xl max-h-[80vh] mx-4">
+            <img
+              src={viewingGallery.images[currentImageIndex]}
+              alt={viewingGallery.title}
+              className="max-w-full max-h-[70vh] object-contain rounded-lg"
+            />
+            
+            {/* Info */}
+            <div className="mt-4 text-center">
+              <h3 className="text-xl font-semibold text-white mb-2">{viewingGallery.title}</h3>
+              <p className="text-slate-400 text-sm max-w-xl mx-auto">{viewingGallery.description}</p>
+              
+              {/* Image counter */}
+              {viewingGallery.images.length > 1 && (
+                <div className="mt-4 flex justify-center gap-2">
+                  {viewingGallery.images.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        index === currentImageIndex ? 'bg-cyan-400' : 'bg-slate-600 hover:bg-slate-500'
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
 {/* Contact Section */}
       <section id="contact" className="py-16 sm:py-24 px-4 sm:px-6 bg-slate-900/50">
         <div className="max-w-4xl mx-auto">
@@ -1342,8 +1969,8 @@ export default function Portfolio() {
                   className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-colors"
                 >
                   <LinkedInIcon />
-                </a>
-                <a
+          </a>
+          <a
                   href="#"
                   className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-colors"
                 >
